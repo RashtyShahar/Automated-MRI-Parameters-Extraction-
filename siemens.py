@@ -3,9 +3,10 @@ import re
 import pandas as pd
 
 print('Copyright © 2023 Shahar Rashty')
+# user will input the first serie page number
 first_page=int(input('First series page number:'))-1
+#user will input the PDF name
 file_name = input('Enter PDF name:')
-# prefix=input('Enter the string that appears before the series name:')
 
 # Open the PDF file
 pdf_file = open(f'{file_name}.pdf', 'rb')
@@ -19,7 +20,7 @@ num_pages = len(pdf_reader.pages)
 # Create an empty list to store the text from each group of pages
 page_groups = []
 
-# Loop through the pages in the PDF file, grouping every 2 consecutive pages together
+# Loop through the pages in the PDF file, grouping every 2 consecutive pages together because each series takes 2 pages at the PDF
 for i in range(first_page, num_pages - 1, 2):
     # Get the text from the current page and the next page
     page_text = ''
@@ -33,8 +34,10 @@ for i in range(first_page, num_pages - 1, 2):
 
 # Close the PDF file
 pdf_file.close()
-prefix=page_groups[0].split('\\')[-2]
 
+#extract the name that appeares on every page before the series name
+prefix=page_groups[0].split('\\')[-2]
+# get all series names they always appears between a few back slashes and after the prefix we found
 names = []
 for text in page_groups:
     try:
@@ -43,12 +46,13 @@ for text in page_groups:
     except:
         continue
 
+#creting a dictionary of dictionaries with series names as outer dict keys
 my_dict = {}
 for name in names:
     my_dict[name] = {}
 # print(my_dict)
 
-
+# extracting the parameters using Regex
 for page_group, key in zip(page_groups, my_dict):
     try:
         my_dict[key]['Pulse sequence'] = re.search(r'(SNR: 1.00 :\s+(\w+))', page_group, re.IGNORECASE).group(2)
@@ -146,10 +150,10 @@ for page_group, key in zip(page_groups, my_dict):
         my_dict[key]['Turbo'] = ('')
 
 
-# assume my_dict is your dictionary
+# Creating DF from dict
 df = pd.DataFrame.from_dict(my_dict, orient='index')
 
-# concatenate to create new columns
+# concatenate to create new columns as needed
 df['Avg/Con'] = df['Averages'].astype(str) + '/' + df['Concatenations'].astype(str)
 df["Resolution [Freq/Phase]"] = df['Base'].astype(str) + '/' + df['phase'].astype(str) + '%'
 

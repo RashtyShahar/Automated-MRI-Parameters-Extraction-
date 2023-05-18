@@ -1,7 +1,7 @@
 # Automated-Parameters-Extraction-
 
 #### As part of my stutent posion one of the most frustrating chores was to manually extract MRI parameters from PDF protocols.
-#### I wrote this user friendlt app to automate the process. A task that use to take a few hours per PDF now can be done within a few seconds .The user is prompt to insert the page number of the first series, and the PDF name ,the app outputs an excel file with all the parameters required from all series at the PDF.
+#### I wrote this user friendly app to automate the process. A task that use to take a few hours per PDF now can be done within a few seconds .The user is prompt to insert the page number of the first series, and the PDF name ,the app outputs an excel file with all the parameters required from all series at the PDF.
 #### The app can be used on any computer without any requirments (no need to install python or any modules all compiled within the exe file) 
 ### Example PDF (highlighted are some of the parameters) :
 
